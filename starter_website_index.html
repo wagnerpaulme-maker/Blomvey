@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mein Projekt – Moderne, schnelle Ein-Seiten-Website</title>
+  <meta name="description" content="Eine schnelle, responsive Starter-Website. Einfach anpassen und auf Netlify oder Vercel deployen." />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mein Projekt – Moderne, schnelle Ein-Seiten-Website" />
+  <meta property="og:description" content="Eine schnelle, responsive Starter-Website. Einfach anpassen und deployen." />
+  <meta property="og:url" content="https://example.com" />
+
+  <!-- PWA basics (optional) -->
+  <meta name="theme-color" content="#0f172a" />
+
+  <style>
+    /* ===== Design-Variablen ===== */
+    :root{
+      --bg: #0b1220;           /* Hintergrund (dunkel) */
+      --panel: #0f172a;        /* Panels / Cards */
+      --panel-2: #111827;      /* dunklerer Ton */
+      --text: #e5e7eb;         /* Fließtext */
+      --muted: #9ca3af;        /* Sekundärtext */
+      --brand: #22d3ee;        /* Akzent (Cyan) */
+      --brand-2: #38bdf8;      /* Hover-Mix */
+      --ok: #86efac;
+      --warn: #fde68a;
+      --maxw: 1100px;          /* max. Breite */
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    /* Hellmodus, wenn vom System gewünscht */
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f8fafc; --panel:#ffffff; --panel-2:#f1f5f9; --text:#0f172a; --muted:#475569; }
+    }
+
+    /* ===== Reset & Grundlayout ===== */
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+      Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.6; color:var(--text); background: radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,.15), transparent 60%), var(--bg);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    a{ color:inherit; text-decoration:none }
+    img{ max-width:100%; height:auto; display:block }
+
+    .container{ width:100%; max-width:var(--maxw); margin-inline:auto; padding:0 20px }
+
+    /* ===== Header / Navigation ===== */
+    header{ position:sticky; top:0; z-index:50; backdrop-filter:saturate(120%) blur(8px); background: color-mix(in oklab, var(--bg) 80%, transparent); border-bottom:1px solid color-mix(in oklab, var(--panel), transparent 60%); }
+    .nav{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0 }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px }
+    .logo{ width:34px; height:34px; border-radius:10px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:var(--shadow) }
+    .navlinks{ display:flex; align-items:center; gap:18px }
+    .navlinks a{ padding:8px 10px; border-radius:10px }
+    .navlinks a:hover{ background: color-mix(in oklab, var(--panel), transparent 60%) }
+
+    .menu-btn{ display:none; background:none; border:1px solid color-mix(in oklab, var(--panel), transparent 30%); border-radius:12px; padding:8px 10px }
+
+    @media (max-width: 860px){
+      .menu-btn{ display:inline-flex }
+      .navlinks{ display:none }
+      .navlinks.open{ display:flex; position:absolute; left:0; right:0; top:58px; padding:14px 20px; background:var(--panel); border-bottom:1px solid color-mix(in oklab, var(--panel-2), transparent 30%) }
+    }
+
+    /* ===== Hero ===== */
+    .hero{ padding:80px 0 40px }
+    .hero .wrap{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:36px; align-items:center }
+    .eyebrow{ display:inline-block; font-size:.85rem; color:var(--muted); border:1px solid color-mix(in oklab, var(--panel), transparent 40%); padding:6px 10px; border-radius:999px; margin-bottom:14px }
+    h1{ font-size: clamp(2rem, 3.4vw + .6rem, 3.25rem); line-height:1.1; margin:0 0 14px }
+    .lead{ font-size: clamp(1rem, 1.2vw + .6rem, 1.15rem); color:var(--muted); margin:0 0 22px }
+
+    .btns{ display:flex; gap:12px; flex-wrap:wrap }
+    .btn{ display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:14px; border:1px solid color-mix(in oklab, var(--panel), transparent 30%); cursor:pointer; transition: transform .06s ease; }
+    .btn:hover{ transform: translateY(-1px) }
+    .btn.primary{ background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#0b1220; font-weight:700; border:none }
+
+    .hero .mock{
+      background: linear-gradient(180deg, color-mix(in oklab, var(--panel), transparent 8%), color-mix(in oklab, var(--panel-2), transparent 0%));
+      border:1px solid color-mix(in oklab, var(--panel), transparent 40%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px; overflow:hidden
+    }
+    .browser-chrome{ display:flex; align-items:center; gap:8px; padding:6px 8px; background:color-mix(in oklab, var(--panel), transparent 35%); border-radius:12px; margin-bottom:10px }
+    .dot{ width:10px; height:10px; border-radius:999px; background:color-mix(in oklab, var(--muted), var(--panel) 40%) }
+    .screen{ aspect-ratio: 16/10; border-radius:12px; background: repeating-linear-gradient(135deg, color-mix(in oklab, var(--panel-2), var(--brand) 6%), color-mix(in oklab, var(--panel-2), var(--brand) 6%) 4px, transparent 4px, transparent 12px); display:grid; place-items:center; color:var(--muted) }
+
+    @media (max-width: 860px){ .hero .wrap{ grid-template-columns: 1fr } }
+
+    /* ===== Features / Cards ===== */
+    section{ padding: 46px 0 }
+    .section-title{ font-size: clamp(1.5rem, 2vw + .6rem, 2rem); margin:0 0 8px }
+    .section-sub{ color:var(--muted); margin:0 0 24px }
+
+    .grid{ display:grid; gap:18px; grid-template-columns: repeat(3, 1fr) }
+    @media (max-width: 1000px){ .grid{ grid-template-columns: repeat(2, 1fr) } }
+    @media (max-width: 640px){ .grid{ grid-template-columns: 1fr } }
+
+    .card{ background: linear-gradient(180deg, color-mix(in oklab, var(--panel), transparent 0%), color-mix(in oklab, var(--panel-2), transparent 0%)); border:1px solid color-mix(in oklab, var(--panel), transparent 35%); border-radius: var(--radius); padding:20px; box-shadow: var(--shadow); }
+    .card h3{ margin: 6px 0 6px; font-size:1.1rem }
+    .card p{ margin: 0; color:var(--muted) }
+
+    /* ===== About ===== */
+    .about{ display:grid; grid-template-columns: 1.1fr .9fr; gap:22px; align-items:center }
+    .badge{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background: color-mix(in oklab, var(--panel), transparent 40%); border:1px solid color-mix(in oklab, var(--panel), transparent 20%); color:var(--muted) }
+    @media (max-width: 900px){ .about{ grid-template-columns: 1fr } }
+
+    /* ===== Kontakt ===== */
+    .contact{
+      background:
+        radial-gradient(600px 300px at 20% -20%, color-mix(in oklab, var(--brand), transparent 80%), transparent 60%),
+        radial-gradient(600px 300px at 120% -20%, color-mix(in oklab, var(--brand-2), transparent 88%), transparent 60%),
+        color-mix(in oklab, var(--panel-2), transparent 0%);
+      border:1px solid color-mix(in oklab, var(--panel), transparent 35%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:24px;
+    }
+    .contact form{ display:grid; gap:12px }
+    .input{ width:100%; padding:12px 14px; border-radius:12px; border:1px solid color-mix(in oklab, var(--panel), transparent 25%); background: color-mix(in oklab, var(--panel), transparent 15%); color:var(--text) }
+    .input:focus{ outline:2px solid color-mix(in oklab, var(--brand), transparent 60%) }
+
+    /* ===== Footer ===== */
+    footer{ padding:40px 0; color:var(--muted) }
+    .footer-grid{ display:grid; gap:18px; grid-template-columns: 1fr auto }
+    .legal a{ color:var(--muted); text-decoration:underline dotted; text-underline-offset:3px }
+    @media (max-width: 680px){ .footer-grid{ grid-template-columns: 1fr } }
+
+    /* ===== Kleine Animationen ===== */
+    @media (prefers-reduced-motion: no-preference){
+      .fade-in{ opacity:0; transform: translateY(6px); animation: fade .6s ease forwards; }
+      .fade-in.delay{ animation-delay: .12s }
+      @keyframes fade{ to{ opacity:1; transform:none } }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Startseite">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Mein&nbsp;Projekt</span>
+      </a>
+
+      <nav>
+        <button class="menu-btn" aria-expanded="false" aria-controls="menu">☰ Menü</button>
+        <div id="menu" class="navlinks" role="menubar">
+          <a role="menuitem" href="#features">Leistungen</a>
+          <a role="menuitem" href="#about">Über uns</a>
+          <a role="menuitem" href="#kontakt">Kontakt</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container wrap">
+        <div>
+          <span class="eyebrow">Schnell. Modern. Bereit für deine Domain.</span>
+          <h1>Starte mit einer performanten, responsiven Website</h1>
+          <p class="lead">Dieses Starter-Template ist suchmaschinenfreundlich, barrierearm und lässt sich in Minuten auf Netlify oder Vercel deployen. Tausche einfach Text &amp; Bilder aus.</p>
+          <div class="btns">
+            <a class="btn primary" href="#kontakt">Jetzt anfragen</a>
+            <a class="btn" href="#features">Mehr erfahren</a>
+          </div>
+        </div>
+
+        <div class="mock fade-in">
+          <div class="browser-chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <div class="screen">
+            <span>Dein Screenshot / Bild hier</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="container">
+        <h2 class="section-title">Leistungen & Vorteile</h2>
+        <p class="section-sub">Passe die Punkte an dein Angebot an. Diese Karten sind ideal für kurze Nutzenargumente.</p>
+        <div class="grid">
+          <article class="card">
+            <div aria-hidden="true">💡</div>
+            <h3>Schnell & SEO‑freundlich</h3>
+            <p>Sauberes HTML, Meta‑Tags und gute Performance als Basis fürs Ranking.</p>
+          </article>
+          <article class="card">
+            <div aria-hidden="true">📱</div>
+            <h3>Überall responsive</h3>
+            <p>Optimiert für Smartphone, Tablet und Desktop mit moderner Typografie.</p>
+          </article>
+          <article class="card">
+            <div aria-hidden="true">🔒</div>
+            <h3>HTTPS automatisch</h3>
+            <p>Auf Netlify/Vercel gibt's kostenlose TLS‑Zertifikate – keine Extra‑Kosten.</p>
+          </article>
+          <article class="card">
+            <div aria-hidden="true">⚡</div>
+            <h3>Einfaches Hosting</h3>
+            <p>Drag‑&‑Drop Deployment bei Netlify oder Git‑Deploy bei Vercel.</p>
+          </article>
+          <article class="card">
+            <div aria-hidden="true">🎨</div>
+            <h3>Leicht anpassbar</h3>
+            <p>Farben & Abstände per Variablen, Struktur in klaren Sektionen.</p>
+          </article>
+          <article class="card">
+            <div aria-hidden="true">🛠️</div>
+            <h3>Erweiterbar</h3>
+            <p>Füge später Blog, Formulare oder Analytics hinzu – ganz nach Bedarf.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container about">
+        <div>
+          <span class="badge">Seit 2025 online 🚀</span>
+          <h2 class="section-title">Über dieses Template</h2>
+          <p class="section-sub">Dieses Grundgerüst konzentriert sich auf Essentials: Barrierefreiheit, Performance und klares Design. Perfekt als Ausgangspunkt für Portfolios, Unternehmensseiten oder Landingpages.</p>
+          <ul>
+            <li>Semantische HTML‑Struktur (&lt;header&gt;, &lt;main&gt;, &lt;section&gt;, &lt;footer&gt;)</li>
+            <li>Accessible Navigation mit Tastatur‑Support</li>
+            <li>Mobile‑First, CSS‑Variablen, keine externen Abhängigkeiten</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Was du anpasst</h3>
+          <p><strong>Logo & Name</strong> (oben links), <strong>Farben</strong> in <code>:root</code>, Texte in allen Sektionen und dein eigenes Bild im Hero.</p>
+          <p>Optional: Impressum/Datenschutz im Footer verlinken (wichtig in DE/EU).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="kontakt">
+      <div class="container">
+        <h2 class="section-title">Kontakt</h2>
+        <p class="section-sub">Nutze das Formular (Beispiel) oder verlinke direkt eine Mailadresse.</p>
+
+        <div class="contact">
+          <form name="kontakt" method="post" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="kontakt" />
+            <p hidden>
+              <label>Nicht ausfüllen: <input name="bot-field" /></label>
+            </p>
+            <label>
+              <span>Name</span><br />
+              <input class="input" type="text" name="name" autocomplete="name" required />
+            </label>
+            <label>
+              <span>E‑Mail</span><br />
+              <input class="input" type="email" name="email" autocomplete="email" required />
+            </label>
+            <label>
+              <span>Nachricht</span><br />
+              <textarea class="input" name="nachricht" rows="5" required></textarea>
+            </label>
+            <button class="btn primary" type="submit">Absenden</button>
+            <a class="btn" href="mailto:hallo@example.com">Oder per E‑Mail schreiben</a>
+          </form>
+          <p style="margin-top:10px; color:var(--muted)">Hinweis: Mit <code>data-netlify="true"</code> sammelt Netlify Formulareingaben automatisch (auch ohne eigenes Backend).
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>&copy; <span id="year"></span> Mein Projekt. Alle Rechte vorbehalten.</div>
+      <div class="legal" aria-label="Rechtliches">
+        <a href="#" aria-label="Impressum">Impressum</a>
+        &nbsp;·&nbsp;
+        <a href="#" aria-label="Datenschutz">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Jahr im Footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile Menü
+    const btn = document.querySelector('.menu-btn');
+    const links = document.getElementById('menu');
+    btn?.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    // Sanftes Scrollen für Ankerlinks
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if(id && id !== '#'){
+          const target = document.querySelector(id);
+          if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+        }
+      });
+    });
+  </script>
+
+  <!-- Strukturierte Daten (einfaches Beispiel) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mein Projekt",
+    "url": "https://example.com",
+    "logo": "https://example.com/logo.png"
+  }
+  </script>
+</body>
+</html>
